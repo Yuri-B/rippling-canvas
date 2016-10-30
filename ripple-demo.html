@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+    <script>
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      function drawCircle(myCircle, context) {
+        context.beginPath();
+        context.arc(myCircle.x, myCircle.y, myCircle.radius, 0, 2 * Math.PI, false);
+        context.fillStyle = '#8ED6FF';
+        context.fill();
+      }
+      function animate(myCircle, canvas, context, startTime) {
+        // update
+        var time = (new Date()).getTime() - startTime;
+        var amplitude = 150;
+
+          // in ms
+        var period = 2000;
+        var basicRadius = myCircle.x;
+        var nextRadius = amplitude * Math.sin(time * 2 * Math.PI / period) + basicRadius;
+        myCircle.radius = nextRadius;
+
+        // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // draw
+        drawCircle(myCircle, context);
+
+        // request new frame
+        requestAnimFrame(function() {
+          animate(myCircle, canvas, context, startTime);
+        });
+      }
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+
+      var myCircle = {
+        x: 300,
+        y: 300,
+        radius: 150,
+        borderWidth: 0
+      };
+
+      drawCircle(myCircle, context);
+
+      // wait one second before starting animation
+      setTimeout(function() {
+        var startTime = (new Date()).getTime();
+        animate(myCircle, canvas, context, startTime);
+      }, 1000);
+    </script>
+  </body>
+</html>      

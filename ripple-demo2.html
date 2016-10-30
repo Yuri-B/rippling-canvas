@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+    <script>
+      window.requestAnimFrame = (function(callback) {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(callback) {
+          window.setTimeout(callback, 1000 / 60);
+        };
+      })();
+
+      function drawCircle(myCircle1, myCircle2, myCircle3, myCircle4, myCircle5, context, color1, color2) {
+        context.beginPath();
+        context.arc(myCircle1.x, myCircle1.y, myCircle1.radius, 0, 2 * Math.PI, false);
+        context.fillStyle = color1;
+        context.fill();
+
+        context.beginPath();
+        context.arc(myCircle2.x, myCircle2.y, myCircle2.radius, 0, 2 * Math.PI, false);
+        context.fillStyle = color2;
+        context.fill();
+
+        context.beginPath();
+        context.arc(myCircle3.x, myCircle3.y, myCircle3.radius, 0, 2 * Math.PI, false);
+        context.fillStyle = color1;
+        context.fill();
+
+        context.beginPath();
+        context.arc(myCircle4.x, myCircle4.y, myCircle4.radius, 0, 2 * Math.PI, false);
+        context.fillStyle = color2;
+        context.fill();
+
+        context.beginPath();
+        context.arc(myCircle5.x, myCircle5.y, myCircle5.radius, 0, 2 * Math.PI, false);
+        context.fillStyle = color1;
+        context.fill();
+        
+      }
+      function animate(myCircle1, myCircle2, myCircle3, myCircle4, myCircle5, canvas, context, startTime) {
+        // update
+        var time = (new Date()).getTime() - startTime;
+        var amplitude = 25;
+
+          // in ms
+        var period = 2000;
+
+        var nextX = amplitude * Math.sin(time * 2 * Math.PI / period);
+        var r = 119;
+        var g = 208;
+        var b = 237;
+
+        var nextX1 = -1 * (amplitude * Math.sin(time * 2 * Math.PI / period));
+
+        var color1 = 'rgb' + '(' + parseInt(r - nextX) + ',' + parseInt(g - nextX) + ',' + parseInt(b - nextX)+ ')';
+        var color2 = 'rgb' + '(' + parseInt(r - nextX1) + ',' + parseInt(g - nextX1) + ',' + parseInt(b - nextX1)+ ')';
+      
+        // clear
+        context.clearRect(0, 0, canvas.width, canvas.height);
+
+        // draw
+        drawCircle(myCircle1, myCircle2, myCircle3, myCircle4, myCircle5, context, color1, color2);
+
+        // request new frame
+        requestAnimFrame(function() {
+          animate(myCircle1, myCircle2, myCircle3, myCircle4, myCircle5, canvas, context, startTime);
+        });
+      }
+      var canvas = document.getElementById('myCanvas');
+      var context = canvas.getContext('2d');
+
+      var myCircle1 = {
+        x: 300,
+        y: 300,
+        radius: 150,
+        borderWidth: 0
+      };
+
+      var myCircle2 = {
+        x: 300,
+        y: 300,
+        radius: 125,
+        borderWidth: 0
+      };
+
+      var myCircle3 = {
+        x: 300,
+        y: 300,
+        radius: 100,
+        borderWidth: 0
+      };
+
+      var myCircle4 = {
+        x: 300,
+        y: 300,
+        radius: 75,
+        borderWidth: 0
+      };
+
+      var myCircle5 = {
+        x: 300,
+        y: 300,
+        radius: 50,
+        borderWidth: 0
+      };
+
+      drawCircle(myCircle1, myCircle2, myCircle3, myCircle4, myCircle5, context, 'rgb(119,208,237)', 'rgb(119,208,237)');
+
+      // wait one second before starting animation
+      setTimeout(function() {
+        var startTime = (new Date()).getTime();
+        animate(myCircle1, myCircle2, myCircle3, myCircle4, myCircle5, canvas, context, startTime);
+      }, 1000);
+    </script>
+  </body>
+</html>      
